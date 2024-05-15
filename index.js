@@ -33,10 +33,6 @@ function actualizarMontos(rNombre, monto) {
 
 }
 
-
-
-
-
 app.get("/roommates", (req, res) => {
     const roommatesJSON = JSON.parse(fs.readFileSync("roommates_data.json", "utf-8"));
     res.json(roommatesJSON)
@@ -46,49 +42,6 @@ app.get("/gastos", (req, res) => {
     const gastosJSON = JSON.parse(fs.readFileSync("gastos_data.json", "utf-8"));
     res.json(gastosJSON)
 });
-
-app.post("/bicicletas", (req, res) => {
-    const { marca, modelo, precio } = req.body;
-    const bicicleta = { id: uuidv4().slice(30), marca, modelo, precio };
-
-    const bicicletasJSON = JSON.parse(fs.readFileSync("Bicicletas.json", "utf-8"))
-    const bicicletas = bicicletasJSON.bicicletas;
-
-    bicicletas.push(bicicleta)
-
-    fs.writeFileSync("Bicicletas.json", JSON.stringify(bicicletasJSON));
-    res.send("bicicleta agregada con éxito");
-
-})
-
-app.put("/bicicletas", (req, res) => {
-    const { id, marca, modelo, precio } = req.body;
-    const bicicleta = { id, marca, modelo, precio };
-
-    const bicicletasJSON = JSON.parse(fs.readFileSync("Bicicletas.json", "utf-8"))
-    const bicicletas = bicicletasJSON.bicicletas;
-
-    bicicletasJSON.bicicletas = bicicletas.map((b) => b.id === id ? bicicleta : b)
-
-    fs.writeFileSync("Bicicletas.json", JSON.stringify(bicicletasJSON));
-    res.send("bicicleta modificada con éxito");
-
-})
-
-
-app.delete("/bicicletas", (req, res) => {
-    const { id } = req.query;
-
-    const bicicletasJSON = JSON.parse(fs.readFileSync("Bicicletas.json", "utf-8"))
-    const bicicletas = bicicletasJSON.bicicletas;
-
-    bicicletasJSON.bicicletas = bicicletas.filter((b) => b.id !== id);
-
-
-    fs.writeFileSync("Bicicletas.json", JSON.stringify(bicicletasJSON));
-    res.send("bicicleta eliminada con éxito");
-
-})
 
 app.post('/roommate', async (req, res) => {
     // id, nombre, email, debe, recibe total
@@ -159,4 +112,9 @@ app.put("/gasto", (req, res) => {
     actualizarMontos(roommate, monto)
     res.send("gasto modificada con éxito");
 
+})
+
+
+app.get('*', (req, res) => {
+    res.send('Página no encontrada')
 })
