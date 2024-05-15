@@ -70,7 +70,9 @@ app.post('/gasto', async (req, res) => {
     //raoommate, descripcion, monto, fecha, id
     try {
         const { roommate, descripcion, monto } = req.body
-
+        if (monto <= 0 || roommate == null) {
+            return res.send('Valores incorrectos')
+        }
         const gasto = { roommate, descripcion, monto, id: uuidv4().slice(30) };
         const gastoJSON = JSON.parse(fs.readFileSync("gastos_data.json", "utf-8"))
         const gastos = gastoJSON.gastos;
